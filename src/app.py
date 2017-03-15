@@ -23,7 +23,7 @@ WEATHER_EP = os.environ['WEATHER_URL']
 
 '''
  This is the analyzer API that accepts GET data as describes below:
- GET http://localhost:5000/weather
+ GET http://localhost:5000/weather/<lat>/<lon>
 '''
 @app.route('/weather/<lat>/<lon>', methods=['GET'])
 def get_weather(lat, lon):
