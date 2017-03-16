@@ -23,7 +23,7 @@ WEATHER_EP = os.environ['WEATHER_URL']
 
 '''
  This is the analyzer API that accepts GET data as describes below:
- GET http://localhost:5000/weather/<lat>/<lon>
+ GET /weather/<lat>/<lon>
 '''
 @app.route('/weather/<lat>/<lon>', methods=['GET'])
 def get_weather(lat, lon):
@@ -32,20 +32,16 @@ def get_weather(lat, lon):
     log.info(weather_service_ep)
     r = requests.get(weather_service_ep, headers={'Content-type': 'application/json'})
     if r.status_code != 200:
-        log.error("FAILED retrieve weather information: '%s', msg: '%s'", input_text, r.text)
-        return None
-    #return r
-    log.info(r.text)
-    response = Response(json.dumps(r.text))
-    response.headers['Content-Type'] = 'application/json'
-    response.status_code = r.status_code
+        log.error("FAILED retrieve weather information msg: '%s', code: '%s'", r.json(), r.status_code)
+        return None, r.status_code
 
-    return response
+    log.info("response json: '%s'", r.json())
+    return json.dumps(r.json()), r.status_code
 
 
 if __name__ == '__main__':
     # construct weateher_ep from env var or vcap_services
     PORT = os.getenv('VCAP_APP_PORT', '5000')
 
-    log.info("Starting weather service weather_service:")
+    log.info("Starting flightassit weather-service")
     app.run(host='0.0.0.0', port=int(PORT))
