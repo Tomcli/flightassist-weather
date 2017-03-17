@@ -19,7 +19,8 @@ app = Flask(__name__, static_url_path='')
 app.config['PROPAGATE_EXCEPTIONS'] = True
 
 # other global variables
-WEATHER_EP = os.environ['WEATHER_URL']
+deploy_mode = os.environ['DEPLOY']
+WEATHER_EP = ''
 
 '''
  This is the analyzer API that accepts GET data as describes below:
@@ -40,8 +41,13 @@ def get_weather(lat, lon):
 
 
 if __name__ == '__main__':
-    # construct weateher_ep from env var or vcap_services
+    # construct weather_ep from env var or vcap_services
     PORT = os.getenv('VCAP_APP_PORT', '5000')
+    if deploy_mode == 'swarm':
+        with open('/run/secrets/weather_url', 'r') as url_secret:
+                WEATHER_EP=url_secret.read().replace('\n', '')
+    else:
+        WEATHER_EP = os.environ['WEATHER_URL']
 
-    log.info("Starting flightassit weather-service")
+    log.info("Starting flightassist weather-service")
     app.run(host='0.0.0.0', port=int(PORT))
