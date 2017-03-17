@@ -3,7 +3,7 @@
 
 .PHONY: localimage localdeploy
 
-localimage: Dockerfile
+localimage: Dockerfile.phusion
 	docker build -t weather-service:v1 .
 
 localdeploy: localimage
