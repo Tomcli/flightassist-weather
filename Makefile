@@ -3,8 +3,8 @@
 
 .PHONY: localimage localdeploy
 
-localimage: Dockerfile.phusion
-	docker build -t weather-service:v1 .
+localimage: Dockerfile.alpine
+	docker build -f Dockerfile.alpine -t weather-service:v1 .
 
 localdeploy: localimage
 	source .env && docker rm -f /weather-service && docker run --name weather-service -p 80:5000 \
