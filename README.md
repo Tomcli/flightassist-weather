@@ -10,3 +10,9 @@ curl -X GET 'http://localhost:80/weather/41.788136/-87.740871'
 When running the microservice in a container service such as swarm or
 kubernetes, you will replace localhost with the service name (e.g.
 weather-service) to lookup the service.
+
+When running the microservice on Cloudfoundry, use the following command:
+
+```shell
+bx app push {your_unique_microservice_name} -f manifest.yml
+```
