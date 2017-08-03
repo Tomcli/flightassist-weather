@@ -1,0 +1,16 @@
+---
+applications:
+- name: filght-weather
+  memory: 256M
+  command: python src/app.py
+  domain: mybluemix.net
+  buildpack: python_buildpack
+  path: .
+  services:
+    - myweatherinsights
+  env: 
+    DEPLOY: cloudfoundry
+declared-services:
+  - myweatherinsights:
+      label: weatherinsights
+      plan: Free-v2
